@@ -1,5 +1,5 @@
 import conf from "../conf/conf";
-import { Client, Databases, Storage, ID, qu, Query } from "appwrite";
+import { Client, Databases, Storage, ID,  Query } from "appwrite";
 
 class Service {
   Client = new Client();
@@ -14,7 +14,7 @@ class Service {
     this.Storage = new Storage(this.Client);
   }
 
-  async createPost({ slug, title, content, status, userId, featureImages }) {
+  async createPost({ slug, title, content, status, userId,featuredImage }) {
     try {
       return await this.databases.createDocument(
         conf.AppwriteDatabaseId,
@@ -24,7 +24,7 @@ class Service {
           title,
           content,
           status,
-          featureImages,
+          featuredImage,
           userId,
         }
       );
@@ -33,7 +33,7 @@ class Service {
     }
   }
 
-  async UpdatePost(slug, { title, content, status,  featureImages }) {
+  async UpdatePost(slug, { title, content, status,  featuredImage}) {
     try {
       return await this.databases.updateDocument(
         conf.AppwriteDatabaseId,
@@ -43,7 +43,7 @@ class Service {
           title,
           content,
           status,
-          featureImages,
+          featuredImage,
         }
       );
     } catch (error) {
@@ -121,7 +121,7 @@ async deletFile(fileId){
   }
 }
 
-getFilePriview(fileId){
+getFilePreview(fileId){
   return this.Storage.getFilePreview(
     conf.AppwriteBucketId,
     fileId
@@ -130,5 +130,5 @@ getFilePriview(fileId){
 
 }
 
-const service = new Service();
-export default service;
+const appwriteService = new Service();
+export default appwriteService;
