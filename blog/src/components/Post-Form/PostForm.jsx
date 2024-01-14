@@ -5,8 +5,8 @@ import appwriteService from "../../Appwrite/config";
 import { useSelector } from "react-redux";
 import { Input, Button, Select, RTE } from "../index";
 
-const postForm = (post) => {
-    console.log(post)
+const postForm = ({post}) => {
+console.log(post)
   const { register, handleSubmit, control, watch, setValue, getValues } =
     useForm({
       defaultValues: {
@@ -21,14 +21,15 @@ const postForm = (post) => {
   const userData = useSelector((state) => state.auth.userData);
 
   const submit = async (data) => {
+    console.log(data)
     if (post) {
-        const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
+        const file = data.featuredImage[0] ? await appwriteService.uploadFlie(data.featuredImage[0]) : null;
 
         if (file) {
-            appwriteService.deleteFile(post.featuredImage);
+            appwriteService.deletFile(post.featuredImage);
         }
 
-        const dbPost = await appwriteService.updatePost(post.$id, {
+        const dbPost = await appwriteService.UpdatePost(post.$id, {
             ...data,
             featuredImage: file ? file.$id : undefined,
         });
@@ -37,7 +38,7 @@ const postForm = (post) => {
             navigate(`/post/${dbPost.$id}`);
         }
     } else {
-        const file = await appwriteService.uploadFile(data.image[0]);
+        const file = await appwriteService.uploadFlie(data.featuredImage[0]);
 
         if (file) {
             const fileId = file.$id;
@@ -106,10 +107,10 @@ const postForm = (post) => {
           label="Featured Image :"
           type="file"
           className="mb-4"
-          accept="image/png, image/jpg, image/jpeg, image/gif"
-          {...register("image", { required: !post })}
+          // accept="image/png, image/jpg, image/jpeg, image/gif"
+          {...register("featuredImage", { required: !post })}
         />
-        {/* {post && (
+        {post && (
           <div className="w-full mb-4">
             <img
               src={appwriteService.getFilePreview(post.featuredImage)}
@@ -117,7 +118,7 @@ const postForm = (post) => {
               className="rounded-lg"
             />
           </div>
-        )} */}
+        )}
         <Select
           options={["active", "inactive"]}
           label="Status"

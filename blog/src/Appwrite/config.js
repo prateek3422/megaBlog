@@ -14,7 +14,7 @@ class Service {
     this.Storage = new Storage(this.Client);
   }
 
-  async createPost({ slug, title, content, status, userId,featuredImage }) {
+  async createPost({  title,slug, content,featuredImage , status, userId,}) {
     try {
       return await this.databases.createDocument(
         conf.AppwriteDatabaseId,
@@ -23,17 +23,17 @@ class Service {
         {
           title,
           content,
-          status,
           featuredImage,
+          status,
           userId,
         }
       );
     } catch (error) {
-      throw error;
+      console.log("Appwrite serive :: createPost :: error", error);
     }
   }
 
-  async UpdatePost(slug, { title, content, status,  featuredImage}) {
+  async UpdatePost(slug, { title, content,   featuredImage,status,}) {
     try {
       return await this.databases.updateDocument(
         conf.AppwriteDatabaseId,
@@ -42,8 +42,8 @@ class Service {
         {
           title,
           content,
-          status,
           featuredImage,
+          status,
         }
       );
     } catch (error) {
